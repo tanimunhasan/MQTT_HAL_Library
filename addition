@@ -1,0 +1,26 @@
+  while (1)
+  {
+//    /* USER CODE END WHILE */
+//
+	  HAL_ADC_Start(&hadc1);
+	  HAL_ADC_PollForConversion(&hadc1, HAL_MAX_DELAY);
+	  readValue = HAL_ADC_GetValue(&hadc1);
+	  sprintf(charData,"%d\n",readValue);
+	  //HAL_UART_Transmit(&huart1,(uint8_t *)charData,strlen(charData),HAL_MAX_DELAY);
+
+
+	  HAL_UART_Receive (&huart1, buffer, 30, 100);
+	  HAL_ADC_Stop(&hadc1);
+
+
+	  strcpy(str, "{\"clientKeys1\":");
+	  strcat(str, charData);
+	  strcat(str, ",\"clientKeys2\":");
+	  strcat(str, charData);
+	  strcat(str,"\"}");
+
+
+	  HAL_UART_Transmit(&huart1, (uint16_t *) str, strlen(str), HAL_MAX_DELAY);
+	  HAL_UART_Receive (&huart1, buffer, strlen(str), 100);
+	  HAL_Delay (100);
+	  
